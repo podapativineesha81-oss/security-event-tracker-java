@@ -1,0 +1,185 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+
+class SecurityEvent {
+    int eventId;
+    String eventName;
+    String category;
+    String source;
+    String severity;
+    String status;
+
+    SecurityEvent(int eventId, String eventName, String category,
+                  String source, String severity, String status) {
+        this.eventId = eventId;
+        this.eventName = eventName;
+        this.category = category;
+        this.source = source;
+        this.severity = severity;
+        this.status = status;
+    }
+
+    void display() {
+        System.out.println("------------------------------");
+        System.out.println("Event ID   : " + eventId);
+        System.out.println("Event Name : " + eventName);
+        System.out.println("Category   : " + category);
+        System.out.println("Source     : " + source);
+        System.out.println("Severity   : " + severity);
+        System.out.println("Status     : " + status);
+    }
+}
+
+public class SecurityEventTracker {
+
+    static Scanner sc = new Scanner(System.in);
+    static ArrayList<SecurityEvent> events = new ArrayList<>();
+
+    static void addEvent() {
+        System.out.print("Enter Event ID: ");
+        int id = sc.nextInt();
+        sc.nextLine();
+
+        System.out.print("Enter Event Name: ");
+        String name = sc.nextLine();
+
+        System.out.print("Enter Category: ");
+        String category = sc.nextLine();
+
+        System.out.print("Enter Source: ");
+        String source = sc.nextLine();
+
+        System.out.print("Enter Severity (Low/Medium/High): ");
+        String severity = sc.nextLine();
+
+        System.out.print("Enter Status (New/Investigating/Resolved): ");
+        String status = sc.nextLine();
+
+        events.add(new SecurityEvent(
+                id, name, category, source, severity, status
+        ));
+
+        System.out.println("Security Event Added Successfully.");
+    }
+
+    static void viewEvents() {
+        if (events.isEmpty()) {
+            System.out.println("No Security Events Found.");
+            return;
+        }
+
+        for (SecurityEvent event : events) {
+            event.display();
+        }
+    }
+
+    static void searchEvent() {
+        System.out.print("Enter Event ID: ");
+        int id = sc.nextInt();
+
+        for (SecurityEvent event : events) {
+            if (event.eventId == id) {
+                event.display();
+                return;
+            }
+        }
+
+        System.out.println("Security Event Not Found.");
+    }
+
+    static void updateEvent() {
+        System.out.print("Enter Event ID: ");
+        int id = sc.nextInt();
+        sc.nextLine();
+
+        for (SecurityEvent event : events) {
+            if (event.eventId == id) {
+
+                System.out.print("Enter New Event Name: ");
+                event.eventName = sc.nextLine();
+
+                System.out.print("Enter New Category: ");
+                event.category = sc.nextLine();
+
+                System.out.print("Enter New Source: ");
+                event.source = sc.nextLine();
+
+                System.out.print("Enter New Severity: ");
+                event.severity = sc.nextLine();
+
+                System.out.print("Enter New Status: ");
+                event.status = sc.nextLine();
+
+                System.out.println("Security Event Updated Successfully.");
+                return;
+            }
+        }
+
+        System.out.println("Security Event Not Found.");
+    }
+
+    static void deleteEvent() {
+        System.out.print("Enter Event ID: ");
+        int id = sc.nextInt();
+
+        for (int i = 0; i < events.size(); i++) {
+            if (events.get(i).eventId == id) {
+                events.remove(i);
+                System.out.println("Security Event Deleted Successfully.");
+                return;
+            }
+        }
+
+        System.out.println("Security Event Not Found.");
+    }
+
+    public static void main(String[] args) {
+
+        int choice;
+
+        do {
+            System.out.println("\n====== Security Event Tracker ======");
+            System.out.println("1. Add Event");
+            System.out.println("2. View Events");
+            System.out.println("3. Search Event");
+            System.out.println("4. Update Event");
+            System.out.println("5. Delete Event");
+            System.out.println("6. Exit");
+
+            System.out.print("Enter Choice: ");
+            choice = sc.nextInt();
+
+            switch (choice) {
+                case 1:
+                    addEvent();
+                    break;
+
+                case 2:
+                    viewEvents();
+                    break;
+
+                case 3:
+                    searchEvent();
+                    break;
+
+                case 4:
+                    updateEvent();
+                    break;
+
+                case 5:
+                    deleteEvent();
+                    break;
+
+                case 6:
+                    System.out.println("Thank You!");
+                    break;
+
+                default:
+                    System.out.println("Invalid Choice.");
+            }
+
+        } while (choice != 6);
+
+        sc.close();
+    }
+}
